@@ -1,5 +1,5 @@
 project: rnshah9/iconvg
-target: iconvg
+target: iconvg-to-png-with-cairo
 tests:
   - file://test/data/arcs.iconvg
 
