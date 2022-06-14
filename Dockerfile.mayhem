@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ubuntu:20.04
+FROM --platform=linux/amd64 ubuntu:20.04 as builder
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libcairo2-dev libxcb-image0-dev
@@ -6,3 +6,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libcairo2-
 ADD . /repo
 WORKDIR /repo
 RUN ./build-example-with-cairo.sh
+
+RUN mkdir -p /deps
+RUN ldd /repo/gen/bin/iconvg-to-png-with-cairo | tr -s '[:blank:]' '\n' | grep '^/' | xargs -I % sh -c 'cp % /deps;'
+
+FROM ubuntu:20.04 as package
+
+COPY --from=builder /deps /deps
+COPY --from=builder /repo/gen/bin/iconvg-to-png-with-cairo /repo/gen/bin/iconvg-to-png-with-cairo
+ENV LD_LIBRARY_PATH=/deps

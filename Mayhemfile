@@ -1,8 +1,8 @@
-project: rnshah9/iconvg
+project: iconvg
 target: iconvg-to-png-with-cairo
-tests:
+testsuite:
   - file://test/data/arcs.iconvg
 
 cmds:
-  - cmd: /repo/gen/bin/iconvg-to-png-with-cairo @@
+  - cmd: /repo/gen/bin/iconvg-to-png-with-cairo /test.iconvg
     filepath: /test.iconvg
